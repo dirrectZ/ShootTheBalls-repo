@@ -1,0 +1,200 @@
+#:import hex kivy.utils.get_color_from_hex
+
+<AppManager>:
+	MenuScreen:
+		name: "menu"
+	GameScreen:
+		name: "game"
+	StatsScreen:
+		name: "stats"
+	ShopScreen:
+		name: "shop"
+
+
+<MenuButton>:
+	font_name: "PixeboyFont.ttf"
+	background_normal: ''
+	background_down: ''
+	background_color: 1, 1, 1
+	color: 0, 0, 0
+	font_size: sp(40)
+	on_press:
+		self.background_color =  0, 0, 0
+		self.color = 1, 1, 1
+		self.pressed()
+
+	on_release:
+		self.background_color =  1, 1, 1
+        self.color = 0, 0, 0
+
+<MenuScreen>:
+	canvas.before:
+		Color:
+			rgb: 0, 0, 0
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+	GridLayout:
+		id: loki
+		rows: 3
+		size_hint: 0.7, 0.6
+		spacing: dp(50)
+		pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+
+		MenuButton:
+			id: lok
+			text: "PLAY"
+			on_release:
+				root.manager.current = "game"
+
+		MenuButton:
+			text: "STATS"
+			on_release:
+                root.manager.current = "stats"
+                root.manager.get_screen("stats").update_list()
+
+		MenuButton:
+			text: "QUIT"
+			on_release:
+#				TODO FIX THIS
+				app.stop()
+#				root.manager.get_screen("shop").Balance += 100
+
+	BoxLayout:
+		size_hint: None, 0.1
+		width: self.height * 2
+		pos_hint: {"center_x": 0.5, "y": 0}
+		Button:
+			id: music_mute
+			on_press:
+				root.manager.switch_music_on_off()
+			background_color: 0, 0, 0, 0
+			background_normal: ""
+			canvas.after:
+				Rectangle:
+					source: "images/Speaker.png"
+					size: self.size
+					pos: self.pos
+
+		Button:
+			id: shop_button
+			background_color: 0, 0, 0, 0
+            background_normal: ""
+			canvas.after:
+                Rectangle:
+                    source: "images/ShootTheBallsCoin.png"
+                    size: self.size
+                    pos: self.pos
+            on_release:
+                root.manager.current = "shop"
+
+
+<GameScreen>:
+	GameLayout:
+
+<GameLayout>
+	rows: 2
+	AnchorLayout:
+		canvas.before:
+			Color:
+				rgb: hex("#0c789c")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
+		size_hint: 1, None
+		height: dp(80)
+		anchor_x: "center"
+		anchor_y: "center"
+		BoxLayout:
+			Label
+				font_name: "PixeboyFont.ttf"
+				text: "SCORE: " + str(root.Score)
+				font_size: sp(28)
+			Label:
+				font_name: "PixeboyFont.ttf"
+				text: "Lives: " + str(root.Lives)
+				font_size: sp(28)
+		# The Game Widget is added in the main.py file
+
+
+<Ball>:
+	allow_stretch: True
+	keep_ratio: False
+	size_hint: None, None
+	size: dp(105), dp(105)
+	on_press: self.shot = True
+
+<StatsScreen>:
+	BoxLayout:
+		orientation: "vertical"
+		Label:
+			size_hint_y: 0.5
+			font_name: "PixeboyFont.ttf"
+			font_size: sp(52)
+			text: "Highscore: " + str(root.Highscore)
+		ScrollView:
+			GridLayout:
+				size_hint_y: None
+				height: self.minimum_height
+				id: past_games
+				cols: 1
+
+		MenuButton:
+			font_size: sp(36)
+			size_hint: 0.6, 0.15
+			pos_hint: {"center_x": 0.5, "center_y": 0.5}
+			id: go_to_menu
+			text: "Back To Menu"
+			on_release:
+				root.manager.current = "menu"
+
+
+<ShopScreen>:
+	BoxLayout:
+		orientation: "vertical"
+		Label:
+			font_size: sp(52)
+			size_hint_y: 0.2
+			text: "Balance: {:,}".format(root.Balance)
+			font_name: "PixeboyFont.ttf"
+		ScrollView
+			StackLayout:
+				spacing: dp(60)
+				size_hint_y: None
+				height: self.minimum_height
+				id: skins_list
+
+		MenuButton:
+	        font_size: sp(36)
+            size_hint: 0.6, 0.15
+	        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+	        id: go_to_menu
+	        text: "Back To Menu"
+	        on_release:
+	            root.manager.current = "menu"
+
+<Skin>:
+#	canvas.before:
+#		Color:
+#			rgb: 0, 1, 0
+#		Rectangle:
+#			pos: self.pos
+#			size: self.size
+
+	size_hint: 0.5, None
+	height: skin_image.height + skin_label.height
+	orientation: "vertical"
+	Image:
+		id: skin_image
+		size_hint_y: None
+		height: self.width
+		allow_stretch: True
+		keep_ratio: False
+	Label:
+		id: skin_label
+		font_name: "PixeboyFont.ttf"
+		font_size: sp(28)
+		text: ""

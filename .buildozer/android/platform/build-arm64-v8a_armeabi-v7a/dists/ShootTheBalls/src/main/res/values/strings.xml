@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shoot The Balls</string>
+    <string name="private_version">87d3b08500e735bae1a0c16c23fd738a5ea68c65</string>
+    <string name="presplash_color">#000000</string>
+    <string name="urlScheme">kivy</string>
+</resources>
