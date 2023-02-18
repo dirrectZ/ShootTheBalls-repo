@@ -1,7 +1,0 @@
-#!/bin/bash
-SCRIPT_PATH="$(cd $(dirname "$BASH_SOURCE"); dirname "$(pwd)")/../.."
-
-# setup the environment to not mess with the system
-export DYLD_FALLBACK_LIBRARY_PATH="${SCRIPT_PATH}/lib:$DYLD_FALLBACK_LIBRARY_PATH"
-export LD_PRELOAD_PATH="${SCRIPT_PATH}/lib"
-export KIVY_HOME="${SCRIPT_PATH}/Resources/.kivy"
